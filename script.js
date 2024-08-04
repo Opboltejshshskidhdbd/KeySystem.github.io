@@ -1,6 +1,5 @@
-window.onload = function() {
-    const url = window.location.href;
-    const hwid = url.split("HWID=")[1];
+document.getElementById('saveButton').onclick = function() {
+    const hwid = document.getElementById('hwidInput').value;
     const statusElement = document.getElementById('status');
 
     if (hwid) {
@@ -45,6 +44,6 @@ window.onload = function() {
             console.error('Error:', error);
         });
     } else {
-        statusElement.innerText = "No HWID found in the URL.";
+        statusElement.innerText = "Please enter an HWID.";
     }
 };
