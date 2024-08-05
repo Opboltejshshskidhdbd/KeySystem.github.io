@@ -1,18 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HWID Logger</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>HWID Management</title>
+    <script>
+        // Replace with your Gist raw URL
+        const GIST_RAW_URL = 'https://gist.githubusercontent.com/Opboltejshshskidhdbd/6639c104f6caa17454dffb47d5d2fbbb/raw/a48a6e89c218b19ffbe35b21ff0dbf471b4a5bc4/oflocDb';
+
+        async function submitHwid() {
+            const hwid = document.getElementById('hwid').value;
+            const timestamp = new Date().toISOString();
+            const data = {
+                hwid: hwid,
+                timestamp: timestamp
+            };
+
+            try {
+                const response = await fetch(GIST_RAW_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert('HWID submitted successfully!');
+                } else {
+                    alert('Failed to submit HWID.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred.');
+            }
+        }
+
+        async function checkHwid() {
+            const hwid = document.getElementById('hwid').value;
+
+            try {
+                const response = await fetch(GIST_RAW_URL);
+                const data = await response.json();
+                const hwidExists = data[hwid] !== undefined;
+
+                if (hwidExists) {
+                    alert('HWID is valid!');
+                } else {
+                    alert('HWID not found.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred.');
+            }
+        }
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>HWID Logger</h1>
-        <input type="text" id="hwidInput" placeholder="Enter HWID here">
-        <button id="saveButton">Save HWID</button>
-        <p id="status"></p>
-    </div>
-    <script src="script.js"></script>
+    <h1>HWID Management</h1>
+    <form id="hwidForm" onsubmit="event.preventDefault(); submitHwid();">
+        <label for="hwid">HWID:</label>
+        <input type="text" id="hwid" name="hwid" required>
+        <button type="submit">Submit HWID</button>
+    </form>
+    <button onclick="checkHwid()">Check HWID</button>
 </body>
 </html>
