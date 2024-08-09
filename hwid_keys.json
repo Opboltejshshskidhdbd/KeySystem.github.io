@@ -1,0 +1,12 @@
+{
+       "hwids": [
+           {
+               "HWID": "user_hwid_1",
+               "Key": "random_key_1"
+           },
+           {
+               "HWID": "user_hwid_2",
+               "Key": "random_key_2"
+           }
+       ]
+}
