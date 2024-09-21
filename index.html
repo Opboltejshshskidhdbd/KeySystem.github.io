@@ -1,34 +1,16 @@
-const express = require('express');
-const fs = require('fs');
-const app = express();
-const port = 3000;
-
-// Middleware to parse JSON
-app.use(express.json());
-
-app.get('/generate-key', (req, res) => {
-    const hwid = req.query.hwid;
-    const key = `key_${Math.random().toString(36).substr(2, 8)}`; // Generate a random key
-
-    // Load existing HWIDs
-    fs.readFile('hwid_keys.json', 'utf8', (err, data) => {
-        if (err) {
-            return res.status(500).send('Error reading database');
-        }
-
-        const db = JSON.parse(data);
-        db.hwids.push({ HWID: hwid, Key: key });
-
-        // Save new HWID and key
-        fs.writeFile('hwid_keys.json', JSON.stringify(db, null, 2), (err) => {
-            if (err) {
-                return res.status(500).send('Error writing to database');
-            }
-            res.send(key); // Send the generated key back to Roblox
-        });
-    });
-});
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Key/Number</title>
+</head>
+<body>
+    <h1>Enter Your Link with Number</h1>
+    <form action="/submit" method="POST">
+        <label for="link">Enter Your Link:</label>
+        <input type="text" id="link" name="link" placeholder="http://example.com/submit?key=12345" required>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
